@@ -10,4 +10,5 @@
   AmpersandBetweenStrings3 [l _amp idr ws] = ‛«l» + str(«idr»)«ws»’
   AmpersandBetweenStrings4 [idl _amp idr ws] = ‛str(«idl») + str(«idr»)«ws»’
   id [c cs*] = ‛«c»«cs»’
+  spaces [cs*] = ‛«cs»’
 }
