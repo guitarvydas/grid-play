@@ -4,7 +4,7 @@
   char_interpstring [s] = ‛«s»’
   char_other [c] = ‛«c»’
   Decl [ws _colon id _eq e ws2] = ‛«ws»«_colon»«id»«_eq»«e»«ws2»’
-  interpString [_dollar f? m t?] = ‛"«f»" + "str(«m»)" + "«t»"’
+  interpString [_dollar f? m t?] = ‛"«f»" & "str(«m»)" & "«t»"’
   strFront [lq cs+] = ‛«cs»’
   strMiddle [lb cs+ rb] = ‛«cs»’
   strTail [cs+ rq] = ‛«cs»’
