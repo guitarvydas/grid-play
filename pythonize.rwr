@@ -1,14 +1,10 @@
-% rewrite pythonize {
+% rewrite strexpander {
   main [char+] = ‛«char»’
-  char_decl [decl] = ‛«decl»’
-  char_interpstring [s] = ‛«s»’
-  char_other [c] = ‛«c»’
-  Decl [ws _colon id _eq e ws2] = ‛«ws»«id»«_eq»«e»«ws2»’
-  interpString [_dollar f? m t?] = ‛"«f»" + "«m»" + "«t»"’
-  strFront [lq cs+] = ‛«cs»’
-  strMiddle [lb cs+ rb] = ‛«cs»’
-  strTail [cs+ rq] = ‛«cs»’
+  char_colon [c] = ‛’
+  Amp1 [ws lq _amp rq ws2] = ‛«ws»«lq» + «rq»«ws2»’
+  Amp2 [ws id _amp rq ws2] = ‛«ws»str(«id») + «rq»«ws2»’
+  Amp3 [ws lq _amp id ws2] = ‛«ws»«lq» + str(«id»)«ws2»’
+  Amp4 [ws idl _amp idr ws2] = ‛«ws»str(«idl») + str(«idr»)«ws2»’
   id [c cs*] = ‛«c»«cs»’
-  Expr_str [s] = ‛«s»’
-  str [lq cs* rq] = ‛«lq»«cs»«rq»’
+  spaces [cs*] = ‛«cs»’
 }

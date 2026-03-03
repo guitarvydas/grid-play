@@ -1,21 +1,15 @@
-:first="Jane"
-:last="Doe"
-[A1] := "Hello, " & "str(first)" & "!" & " Your surname is " & last
-
 pythonize {
   main = char+
   char =
-    | applySyntactic<Decl>         -- decl
-    | interpString                 -- interpstring
+    | ":"                          -- colon
+    | applySyntactic<Amp1>         -- amp1
+    | applySyntactic<Amp2>         -- amp2
+    | applySyntactic<Amp3>         -- amp3
+    | applySyntactic<Amp4>         -- amp4
     | any                          -- other
-  Decl = #spaces ":" id "=" Expr #spaces
-  interpString = "$" strFront? strMiddle strTail?
-  strFront = "\"" (~"\"" ~"{" any)+
-  strMiddle = "{" (~"\"" ~"{" ~"}" any)+ "}"
-  strTail = (~"\""  ~"{" ~"}" any)+ "\""
+  Amp1 = #spaces "\"" "&" "\"" #spaces
+  Amp2 = #spaces id "&" "\"" #spaces
+  Amp3 = #spaces "\"" "&" id #spaces
+  Amp4 = #spaces id "&" id #spaces
   id = (letter | "_") (alnum | "_")*
-  Expr =
-    | str -- str
-  str = "\"" (~"\"" any)* "\""
-}
 }
