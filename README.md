@@ -13,8 +13,6 @@ Human-writable Grid:
 [A1] := $"Hello, {first}!" & " Your surname is " & last
 ```
 
-N.B. 'last' should be 'str(last)' - replace 'ampexpander' with 'ampexpander-full' in @makec.
-
 verbose, but, normalized Grid code:
 ```
 :first="Jane"
@@ -22,7 +20,7 @@ verbose, but, normalized Grid code:
 [A1] := "Hello, " & "str(first)" & "!" & " Your surname is " & last
 ```
 
-Python:
+pythonize:
 ```
 first = "Jane"
 last = "Doe"
