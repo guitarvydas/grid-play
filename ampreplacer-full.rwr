@@ -1,0 +1,13 @@
+% rewrite ampreplacer_full {
+  main [char+] = ‛«char»’
+  char_amp [s] = ‛«s»’
+  char_amp2 [s] = ‛«s»’
+  char_amp3 [s] = ‛«s»’
+  char_amp4 [s] = ‛«s»’
+  char_other [c] = ‛«c»’
+  AmpersandBetweenStrings [l _amp r ws] = ‛«l» + «r»«ws»’
+  AmpersandBetweenStrings2 [idl _amp r ws] = ‛str(«idl») + «r»«ws»’
+  AmpersandBetweenStrings3 [l _amp idr ws] = ‛«l» + str(«idr»)«ws»’
+  AmpersandBetweenStrings4 [idl _amp idr ws] = ‛str(«idl») + str(«idr»)«ws»’
+  id [c cs*] = ‛«c»«cs»’
+}

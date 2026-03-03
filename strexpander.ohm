@@ -1,0 +1,16 @@
+strexpander {
+  main = char+
+  char =
+    | applySyntactic<Decl>         -- decl
+    | interpString                 -- interpstring
+    | any                          -- other
+  Decl = #spaces ":" id "=" Expr #spaces
+  interpString = "$" strFront? strMiddle strTail?
+  strFront = "\"" (~"\"" ~"{" any)+
+  strMiddle = "{" (~"\"" ~"{" ~"}" any)+ "}"
+  strTail = (~"\""  ~"{" ~"}" any)+ "\""
+  id = (letter | "_") (alnum | "_")*
+  Expr =
+    | str -- str
+  str = "\"" (~"\"" any)* "\""
+}

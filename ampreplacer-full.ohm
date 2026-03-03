@@ -1,0 +1,14 @@
+ampreplacer_full {
+  main = char+
+  char =
+    | applySyntactic<AmpersandBetweenStrings> -- amp
+    | applySyntactic<AmpersandBetweenStrings2> -- amp2
+    | applySyntactic<AmpersandBetweenStrings3> -- amp3
+    | applySyntactic<AmpersandBetweenStrings4> -- amp4
+    | any -- other
+  AmpersandBetweenStrings = "\"" "&" "\"" #spaces
+  AmpersandBetweenStrings2 = id "&" "\"" #spaces
+  AmpersandBetweenStrings3 = "\"" "&" id #spaces
+  AmpersandBetweenStrings4 = id "&" id #spaces
+  id = (letter | "_") (alnum | "_")*
+}

@@ -1,0 +1,8 @@
+ampreplacer {
+  main = char+
+  char =
+    | applySyntactic<AmpersandBetweenStrings> -- amp
+    | any -- other
+  AmpersandBetweenStrings = "\"" "&" "\"" #spaces
+  ch = alnum | "_"
+}

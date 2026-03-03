@@ -1,0 +1,5 @@
+% rewrite ampreplacer {
+  main [char+] = ‛«char»’
+  AmpersandBetweenStrings [l _amp r ws] = ‛«l» + «r»«ws»’
+  ch [c] = ‛«c»’
+}
