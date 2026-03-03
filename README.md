@@ -6,7 +6,7 @@ This is a quickie example. I'm cutting corners, e.g. I don't handle multiple int
 # notes
 The objective of this stage is to rewrite shorthand .grid code to long-hand .grid code. This makes the .grid compiler simpler (it only needs to handle one verbose case for string handling)
 
-Grid:
+Human-writable Grid:
 ```
 : first = "Jane"
 : last = "Doe"
@@ -15,6 +15,12 @@ Grid:
 
 N.B. 'last' should be 'str(last)' - replace 'ampexpander' with 'ampexpander-full' in @makec.
 
+verbose, but, normalized Grid code:
+```
+:first="Jane"
+:last="Doe"
+[A1] := "Hello, " & "str(first)" & "!" & " Your surname is " & last
+```
 
 Python:
 ```
