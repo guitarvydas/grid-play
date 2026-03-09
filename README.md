@@ -25,7 +25,7 @@ pythonize:
 first = "Jane"
 last = "Doe"
 
-A1 = "Hello, " + str(first) + "!" + " Your surname is " + last
+rtlib.cellAssign (A1, "Hello, " + str(first) + "!" + " Your surname is " + last)
 ```
 
 I'm not using Python F-strings, since, someday, you might want to target some other language.
