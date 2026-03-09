@@ -3,6 +3,8 @@
   char_colon [c] = ‛’
   Amp1 [ws _amp q ws2] = ‛«ws» + «q»«ws2»⎨xcontinue⎬’
   Amp2 [ws _amp id ws2] = ‛«ws» + str(«id»)«ws2»⎨xcontinue⎬’
+  AssignCell [lb id rb eq cs* nl] = ‛\nrtlib.cellAssign ("«id»", «cs»«nl»)⎨xcontinue⎬’
   id [c cs*] = ‛«c»«cs»’
+  nl [c] = ‛«c»’
   spaces [cs*] = ‛«cs»’
 }

@@ -4,8 +4,11 @@ pythonize {
     | ":"                          -- colon
     | applySyntactic<Amp1>         -- amp1
     | applySyntactic<Amp2>         -- amp2
+    | applySyntactic<AssignCell>   -- assigncell
     | any                          -- other
   Amp1 = #spaces "&" "\"" #spaces
   Amp2 = #spaces "&" id #spaces
+  AssignCell = "[" id "]" "=" #(~nl any)* nl
+  nl = "\n" | end
   id = (letter | "_") (alnum | "_")*
 }

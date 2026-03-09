@@ -1,3 +1,3 @@
 first="Jane"
 last="Doe"
-[A1] = "Hello, "  + str(first)  + "!"  + " Your surname is "  + str(last)
+rtlib.cellAssign ("A1",  "Hello, "  + str(first)  + "!"  + " Your surname is "  + str(last))

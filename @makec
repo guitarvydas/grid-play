@@ -2,3 +2,4 @@
 set -o pipefail
 test=strexpander
 ${PBP}/trmog --outname "${test}" --drawing grid.drawio --main main.py --arg "${test}.grid"
+cat "${test}".py
