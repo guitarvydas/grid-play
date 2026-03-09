@@ -2,9 +2,3 @@
 set -o pipefail
 test=strexpander
 ${PBP}/trmog --outname "${test}" --drawing grid.drawio --main main.py --arg "${test}.grid"
-
-
-
-rm -f out.*
-${PBP}/das2json grid.drawio
-python main.py ${test}.grid main grid.drawio.json | ${PBP}/splitoutputs

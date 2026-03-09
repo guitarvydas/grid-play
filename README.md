@@ -44,7 +44,7 @@ pythonize:
 first = "Jane"
 last = "Doe"
 
-A1 = "Hello, " + str(first) + "!" + " Your surname is " + last
+rtlib.cellAssign ("A1", "Hello, " + str(first) + "!" + " Your surname is " + last)
 ```
 
 I'm not using Python F-strings, since, someday, you might want to target some other language.
@@ -54,6 +54,7 @@ I'm not using Python F-strings, since, someday, you might want to target some ot
 With respect to creating a new language, you would probably want to do semantic analysis before spitting out Python - I don't do that here, to maintain clarity, focussing only on the use of the t2t tools to show how to transmogrify text code into other text code. The stock `t2t` tools don't help much with semantic analysis, anyway - semantic analysis needs to be done mostly with helper routines in the host language (say, Javascript in this case (not Python, Javascript, due to the use of OhmJS and the way the rest of the rwr stuff is written). Including such details would have made this example difficult to read.
 
 # usage
+run `./@install` once to install various JS libs
 `./@make`
 
 # notes

@@ -1,3 +1,0 @@
-:first="Jane"
-:last="Doe"
-[A1] := "Hello, " & first & "!" & " Your surname is " & last

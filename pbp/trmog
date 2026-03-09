@@ -11,6 +11,8 @@ Pipeline:
 
 On success  → each out.<ext> is moved to <outname>.<ext>; temp.* are removed.
 On error    → out.✗ exists; its contents are printed and nothing is moved.
+
+[TODO: it looks like out.* and temp.* are not actuall being removed]
 """
 
 import argparse
@@ -84,13 +86,13 @@ def main() -> None:
 
     # ── pre-clean: remove any stale out.* from previous runs ─────────────────
     stale = glob_in(cwd, "out.*")
-    if stale:
-        print(f"trmog: removing {len(stale)} stale out.* file(s)", flush=True)
+    # if stale:
+    #     print(f"trmog: removing {len(stale)} stale out.* file(s)", flush=True)
     for path in stale:
         os.remove(path)
 
     # ── step 1: das2json ─────────────────────────────────────────────────────
-    print(f"trmog: running das2json on {drawing!r}", flush=True)
+    # print(f"trmog: running das2json on {drawing!r}", flush=True)
     try:
         subprocess.run([das2json, drawing], check=True, cwd=cwd)
     except subprocess.CalledProcessError as exc:
@@ -101,7 +103,7 @@ def main() -> None:
 
     # ── step 2: python main | splitoutputs ───────────────────────────────────
     python_cmd = [sys.executable, main_script, args.arg, "main", drawing_json]
-    print(f"trmog: running pipeline: {' '.join(python_cmd)} | splitoutputs", flush=True)
+    # print(f"trmog: running pipeline: {' '.join(python_cmd)} | splitoutputs", flush=True)
     try:
         with subprocess.Popen(
             python_cmd,
@@ -145,14 +147,14 @@ def main() -> None:
         basename = os.path.basename(src)          # "out.py", "out.0.grid", …
         ext      = basename[len("out."):]          # "py", "0.grid", …
         dst      = os.path.join(cwd, f"{args.outname}.{ext}")
-        print(f"trmog: {basename}  →  {os.path.basename(dst)}")
+        # print(f"trmog: {basename}  →  {os.path.basename(dst)}")
         shutil.move(src, dst)
 
     # ── step 5: clean up temp files ──────────────────────────────────────────
     for tmp in glob_in(cwd, "temp.*"):
         os.remove(tmp)
 
-    print("trmog: done", flush=True)
+    # print("trmog: done", flush=True)
 
 
 if __name__ == "__main__":
