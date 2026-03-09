@@ -1,10 +1,8 @@
 % rewrite strexpander {
   main [char+] = ‛«char»’
   char_colon [c] = ‛’
-  Amp1 [ws lq _amp rq ws2] = ‛«ws»«lq» + «rq»«ws2»’
-  Amp2 [ws id _amp rq ws2] = ‛«ws»str(«id») + «rq»«ws2»’
-  Amp3 [ws lq _amp id ws2] = ‛«ws»«lq» + str(«id»)«ws2»’
-  Amp4 [ws idl _amp idr ws2] = ‛«ws»str(«idl») + str(«idr»)«ws2»’
+  Amp1 [ws _amp q ws2] = ‛«ws» + «q»«ws2»⎨xcontinue⎬’
+  Amp2 [ws _amp id ws2] = ‛«ws» + str(«id»)«ws2»⎨xcontinue⎬’
   id [c cs*] = ‛«c»«cs»’
   spaces [cs*] = ‛«cs»’
 }
