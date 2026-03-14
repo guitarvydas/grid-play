@@ -1,6 +1,6 @@
 This is a short example of using t2t (text-to-text transmogrification) to convert a snippet of a new language design into working Python code and how this can simplify writing a "compiler" for such a new language.
 
-The new language is called "grid". (Denis Bredelet https://github.com/grid-lang/grid-lang.cc)
+The new language is called "grid". ( Denis Bredelet https://github.com/grid-lang/grid-lang.cc )
 
 You don't need to understand what `strexpander.grid` does nor its syntax. The point of this example is to show how to map a non-traditional syntax into valid Python. "$" strings in `grid` have a syntax similar to that of Python F-strings where `{...}` causes string interpolation. (Grid's semantics are somewhat different for what actually happens here, but, you don't need to understand those kinds of nuances to get the point of this example).
 
