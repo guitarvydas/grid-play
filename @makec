@@ -3,9 +3,11 @@ set -o pipefail
 test=strexpander
 ${PBP}/output_begin
 cat ${test}.grid |\
-    ${PBP}/t2t strexpander | ${PBP}/fanout 2> >(${PBP}/output_to_port "0.grid") |\
-    ${PBP}/t2t pythonize   | ${PBP}/output_to_port "py"
+    ${PBP}/t2t strexpander |\
+    fanout 2> >(${PBP}/output_to_port "0.grid") |\
+           ${PBP}/t2t pythonize | ${PBP}/output_to_port "py"
 ${PBP}/output_end
-cat out.json
+${PBP}/splitoutputs <out.json
+jq . out.json
 rm -f temp.*
 
