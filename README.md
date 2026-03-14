@@ -36,17 +36,16 @@ verbose, but, normalized Grid code:
 ```
 :first="Jane"
 :last="Doe"
-[A1] := "Hello, " & "str(first)" & "!" & " Your surname is " & last
+[A1] := "Hello, " & first & "!" & " Your surname is " & last
 ```
 
-Note that this version is still `.grid` code. It uses "`&`" for string concatenation an the `[A1]` syntax. The difference is that this code does *not* use `"$"` syntax. String interpolation has been unwound into simple string concatenation of strings and variables. This version might be considered "verbose" from a human perspective, but is machine-readable and normalized. 
+Note that this version is still `.grid` code. It uses "`&`" for string concatenation and the `[A1]` syntax. The difference is that this code does *not* use `"$"` syntax. String interpolation has been unwound into simple string concatenation of strings and variables. This version might be considered "verbose" from a human perspective, but is machine-readable and normalized. 
 
 pythonize:
 ```
-first = "Jane"
-last = "Doe"
-
-rtlib.cellAssign ("A1", "Hello, " + str(first) + "!" + " Your surname is " + last)
+first="Jane"
+last="Doe"
+rtlib.cellAssign ("A", "1",  "Hello, "  + str(first)  + "!"  + " Your surname is "  + str(last))
 ```
 
 I'm not using Python F-strings, since, someday, you might want to target some other language.

@@ -1,6 +1,6 @@
 [
 
 { "0.grid" : ":first=\"Jane\"\n:last=\"Doe\"\n[A1] := \"Hello, \" & first & \"!\" & \" Your surname is \" & last" },
-{ "py" : "first=\"Jane\"\nlast=\"Doe\"\nrtlib.cellAssign (\"A\", \"1\",  \"Hello, \"  + str(first)  + \"!\"  + \" Your surname is \"  + str(last))" },
+{ "py" : "import rtlib\nimport rtlib\nimport rtlib\nfirst=\"Jane\"\nlast=\"Doe\"\nrtlib.cellAssign (\"A\", \"1\",  \"Hello, \"  + str(first)  + \"!\"  + \" Your surname is \"  + str(last))" },
 
 {}]
