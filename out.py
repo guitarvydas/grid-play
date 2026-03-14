@@ -1,4 +1,4 @@
-import rtlib
 first="Jane"
 last="Doe"
-[A1] = "Hello, "  + str(first)  + "!"  + " Your surname is "  + str(last)
+import rtlib
+rtlib.cellAssign ("A", "1",  "Hello, "  + str(first)  + "!"  + " Your surname is "  + str(last))

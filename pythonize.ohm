@@ -2,9 +2,9 @@ pythonize {
   main = char+
   char =
     | ":"                          -- colon
+    | applySyntactic<AssignCell>   -- assigncell
     | applySyntactic<Amp1>         -- amp1
     | applySyntactic<Amp2>         -- amp2
-    | applySyntactic<AssignCell>   -- assigncell
     | any                          -- other
   Amp1 = #spaces "&" "\"" #spaces
   Amp2 = #spaces "&" id #spaces
