@@ -2,7 +2,7 @@ This is a short example of using t2t (text-to-text transmogrification) to conver
 
 The new language is called "grid". ( Denis Bredelet https://github.com/grid-lang/grid-lang.cc )
 
-You don't need to understand what `strexpander.grid` does nor its syntax. The point of this example is to show how to map a non-traditional syntax into valid Python. "$" strings in `grid` have a syntax similar to that of Python F-strings where `{...}` causes string interpolation. (Grid's semantics are somewhat different for what actually happens here, but, you don't need to understand those kinds of nuances to get the point of this example).
+You don't need to understand what `strexpander.grid` does nor its syntax. The point of this example is to show how to map a non-traditional syntax into valid Python. "$" strings in `grid` have a syntax similar to that of Python F-strings, where `{...}` causes string interpolation. (Grid's semantics are somewhat different for what actually happens here, but, you don't need to understand those kinds of nuances to get the point of this example).
 
 The objective of this stage is to rewrite shorthand .grid code to long-hand .grid code. This makes the downstream .grid compiler simpler. It only needs to handle only one case, albeit verbose from users' perspective, for string handling. After transmogrification, we can "compile" the new language (without syntactic sugar niceties) into Python.
 
@@ -38,6 +38,8 @@ verbose, but, normalized Grid code:
 :last="Doe"
 [A1] := "Hello, " & "str(first)" & "!" & " Your surname is " & last
 ```
+
+Note that this version is still `.grid` code. It uses "`&`" for string concatenation an the `[A1]` syntax. The difference is that this code does *not* use `"$"` syntax. String interpolation has been unwound into simple string concatenation of strings and variables. This version might be considered "verbose" from a human perspective, but is machine-readable and normalized. 
 
 pythonize:
 ```
