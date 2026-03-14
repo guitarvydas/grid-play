@@ -8,7 +8,8 @@ pythonize {
     | any                          -- other
   Amp1 = #spaces "&" "\"" #spaces
   Amp2 = #spaces "&" id #spaces
-  AssignCell = "[" id "]" "=" #(~nl any)* nl
+  AssignCell = "[" cellid "]" "=" #(~nl any)* nl
   nl = "\n" | end
   id = (letter | "_") (alnum | "_")*
+  cellid = (letter | "_")+ digit*
 }
