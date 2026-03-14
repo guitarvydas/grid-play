@@ -8,5 +8,4 @@ cat ${test}.grid |\
            ${PBP}/t2t pythonize | ${PBP}/output_to_port "py"
 ${PBP}/output_end
 ${PBP}/splitoutputs <out.json
-rm -f temp.*
 

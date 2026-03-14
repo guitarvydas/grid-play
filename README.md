@@ -1,61 +1,74 @@
-This is a short example of using t2t (text-to-text transmogrification) to convert a snippet of a new language design into working Python code and how this can simplify writing a "compiler" for such a new language.
 
-The new language is called "grid". ( Denis Bredelet https://github.com/grid-lang/grid-lang.cc )
+# t2t Example: Grid to Python
 
-You don't need to understand what `strexpander.grid` does nor its syntax. The point of this example is to show how to map a non-traditional syntax into valid Python. "$" strings in `grid` have a syntax similar to that of Python F-strings, where `{...}` causes string interpolation. (Grid's semantics are somewhat different for what actually happens here, but, you don't need to understand those kinds of nuances to get the point of this example).
+This example uses `t2t` (text-to-text transmogrification) to compile a snippet of Grid language source code into working Python. The goal is to show how a two-pass pipeline of simple text rewrites can serve as a lightweight compiler for a new language or as a prepass stage to lighten the load for a subsequent, downstream compiler pass.
 
-The objective of this stage is to rewrite shorthand .grid code to long-hand .grid code. This makes the downstream .grid compiler simpler. It only needs to handle only one case, albeit verbose from users' perspective, for string handling. After transmogrification, we can "compile" the new language (without syntactic sugar niceties) into Python.
+## Background
 
-This is kind of like "macros" that transform syntax of a language into the same language, but simpler to "compile" ("interpret").
+Grid is a new language by Denis Bredelet (https://github.com/grid-lang/grid-lang.cc). It uses `[A1]`-style cell references and `$"..."` for string interpolation, similar to Python f-strings.
 
-The first step - simplification of the language - is seen in `@makec` as `${PBP}/t2t strexpander`. This uses the `t2t` tools with `stexpander.ohm` and `strexpander.rwr`. The `strexpander.ohm` file is a grammar (in OhmJS syntax) while the `strexpander.rwr` is a set of rewrite rules with one set of rewrite rules corresponding to each grammar rule. You can examine the grammar and rewrite rules by opening the files in a text editor.
+## The Pipeline
 
-The second step - rewriting the simplified `.grid` code into Python - is seen in `@makec` as `${PBP}/t2t pythonize`. This uses the grammar `pythonize.ohm` and the rewrite rule set `pythonize.rwr`. The only complication is that I handle the dissectiondeconstruction of string concatenation in 4 pieces (1. string & string, 2. variable & string, 3. string & variable, 4. variable & variable) [_There are many other ways to solve this, I chose to be very explicit to keep this example "simple" and "readable"._]
+Compilation happens in two passes, expressed as a bash pipeline:
 
-The whole process is seen as a simple `bash` pipeline in `@makec`
-```
+```bash
 cat ${test}.grid | ${PBP}/t2t strexpander | ${PBP}/t2t pythonize
 ```
 
-1. push the source code as a big text string into the front of the pipeline (`cat ...`), 
-2. then macro-process using the `strexpander` step, 
-3. then convert to Python using the `pythonize` step.
+**Pass 1 — `strexpander`:** Expands syntactic sugar into normalized, verbose Grid. No `$`-strings after this pass — all string interpolation is unwound into explicit `&` concatenation.
 
-Usually, I draw this as a diagram (see the appendix) but in this simple example, there are no feedback loops nor fan-out. The pipeline is a simple sequential pipeline which can be expressed in `bash` textual syntax. To keep things simple, I chose to write this example as a `bash` script instead of as a full PBP diagram.
+**Pass 2 — `pythonize`:** Converts normalized Grid into Python, emitting calls to a small runtime library (`rtlib`).
 
-# The Transmogrifications:
+Each pass is defined by two files: a grammar (`.ohm`) and a rewrite rule set (`.rwr`). You can read them directly in a text editor.
 
-Human-writable Grid:
+## Example
+
+**Input** (human-written Grid):
+
 ```
 : first = "Jane"
 : last = "Doe"
 [A1] := $"Hello, {first}!" & " Your surname is " & last
 ```
 
-verbose, but, normalized Grid code:
+**After `strexpander`** (normalized Grid — no `$`-strings):
+
 ```
 :first="Jane"
 :last="Doe"
 [A1] := "Hello, " & first & "!" & " Your surname is " & last
 ```
 
-Note that this version is still `.grid` code. It uses "`&`" for string concatenation and the `[A1]` syntax. The difference is that this code does *not* use `"$"` syntax. String interpolation has been unwound into simple string concatenation of strings and variables. This version might be considered "verbose" from a human perspective, but is machine-readable and normalized. 
+**After `pythonize`** (Python):
 
-pythonize:
-```
+```python
 first="Jane"
 last="Doe"
-rtlib.cellAssign ("A", "1",  "Hello, "  + str(first)  + "!"  + " Your surname is "  + str(last))
+import rtlib
+rtlib.cellAssign("A", "1", "Hello, " + str(first) + "!" + " Your surname is " + str(last))
 ```
 
-I'm not using Python F-strings, since, someday, you might want to target some other language.
+## How `pythonize` Handles String Concatenation
 
-[_This is but a quickie example. I'm cutting corners, e.g. I don't handle all of the nuances of the new language (like multiple string interpolations in the same string). The focus here is on how to use transmogrification to simplify the work in downstream passes._]
+Grid's `&` operator covers four cases: string & string, string & variable, variable & string, variable & variable. Each case has an explicit rewrite rule. This is intentionally verbose — clarity is preferred over cleverness for a teaching example.
 
-With respect to creating a new language, you would probably want to do semantic analysis before spitting out Python - I don't do that here, to maintain clarity, focussing only on the use of the t2t tools to show how to transmogrify text code into other text code. The stock `t2t` tools don't help much with semantic analysis, anyway - semantic analysis needs to be done mostly with helper routines in the host language (say, Javascript in this case (not Python, Javascript, due to the use of OhmJS and the way the rest of the rwr stuff is written). Including such details would have made this example difficult to read.
+The output uses `rtlib` rather than Python f-strings, to show that string interpolation can be expressed as plain concatenation. This makes the example easier to port to another target language (e.g. JavaScript).
 
-# usage
-run `./@install` once to install various JS libs
-`./@make`
+## The `xcontinue` Loop
 
-# notes
+`pythonize` uses a rewrite loop. Each time a rule rewrites part of the source, it calls `⎨xcontinue⎬`, which signals `t2t` to make another pass over the now-modified source. This is needed because `t2t` finds and applies only the first matching rule per pass — so rewrites that produce code matchable by other rules require subsequent passes to complete.
+
+`⎨xcontinue⎬` returns the empty string, so it can be inserted anywhere in a rewrite without affecting output. Use it with care: any rule that fires on every pass will apply repeatedly. In this example, `import rtlib` is emitted from the `AssignCell` rule (which fires once) rather than from `main` (which fires on every pass) — otherwise `import rtlib` would appear multiple times in the output.
+
+## Notes
+
+This example cuts corners deliberately. It does not handle all Grid semantics, does not perform semantic analysis, and does not cover every string interpolation case. The focus is narrowly on showing how `t2t` rewrites can simplify a downstream compiler.
+
+A real Grid compiler would add semantic analysis in the host language (JavaScript, given the use of OhmJS). The `t2t` tools handle syntax transformation only.
+
+## Usage
+
+```bash
+./@install   # run once to install JS dependencies
+./@make
+```
